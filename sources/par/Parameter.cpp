@@ -14,6 +14,7 @@
     including header files
 -------------------------------------------------------------------------------------------- **/
 #include "Parameter.h"
+#include <algorithm>
 /** --------------------------------------------------------------------------------------------
     including library files
 -------------------------------------------------------------------------------------------- **/
@@ -83,19 +84,21 @@ RET_CODE Parameter::parser(const STRING& inp_arg)
         STRING indicator;
         STRING value;
 
-
-#if 0
         while(std::getline(ifs, str_line))
         {
         	STR_STREAM sstr_line(str_line);
             std::getline(sstr_line, indicator, ' ');
             std::getline(sstr_line, value);
+            value.erase(remove_if(value.begin(), value.end(), isspace), value.end());
 
-            if("#MODE_TO_RUN_APP_SD" == indicator)	app_sd.setRunMode(value);
-            if("#MODE_TO_RUN_APP_OD" == indicator)	app_od.setRunMode(value);
+            if("#MODE_TO_RUN_APP_SD"       == indicator)    app_sd.setRunMode(value);
+            if("#MODE_TO_RUN_APP_OD"       == indicator)	app_od.setRunMode(value);
+            if("#INPUT_CAMERA_SIZE_WIDTH"  == indicator)    setWid(std::stoi(value));
+            if("#INPUT_CAMERA_SIZE_HEIGHT" == indicator)    setHei(std::stoi(value));
+            if("#INPUT_CAMERA_SEQ_FORMAT"  == indicator)    setHei(std::stoi(value));
+
 
         }
-#endif
     }
     
 

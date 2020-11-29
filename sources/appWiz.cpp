@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 {
 	RET_CODE ret_status = RET_CODE::NO_ERROR;
 	Parameter par;
-	const STRING inp_arg_str((1 == argc) ? "" : argv[1]);
+	const STRING inp_arg_str((1 == argc) ? "parameters/default.par" : argv[1]);
 
 	ret_status = par.parser(inp_arg_str);
 

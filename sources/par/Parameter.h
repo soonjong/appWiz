@@ -52,10 +52,8 @@ private:
 
 public:
     /* setter */
-	void setWid(const INT32S inp) noexcept {
-		if((32 <= inp) && inp >= 3840 && inp % 32 == 0)
-			sz_wid = (INT32U)(inp);
-	}
+	void setWid(const INT32S inp) noexcept { if((32 <= inp) && (3840 <= inp) && (0 == (inp % 32)))   sz_wid = (INT32U)(inp); }
+    void setHei(const INT32S inp) noexcept { if((16 <= inp) && (2160 <= inp) && (0 == (inp % 16)))   sz_hei = (INT32U)(inp); }
     /* getter */
     /* shower */
     /* constructor */

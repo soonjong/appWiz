@@ -28,19 +28,20 @@ extern "C" {
 /** --------------------------------------------------------------------------------------------
     global enumerations
 -------------------------------------------------------------------------------------------- **/
-enum class SEQ_FMT : INT32U {		UNKNOWN    =  0U,
-									UYVY422I   =  1U,
-									YUYV422I   =  2U,
-									YUV420SP   =  3U,
-									YUV444I	   =  4U,
-									YUV444P    =  5U,
-									BGR444I    =  6U,
-									BGR444P    =  7U,
-									RGB444I    =  8U,
-									RGB444P    =  9U,
-									RCCC_BAYER = 10U,
-									RCCB_BAYER = 11U,
-									RGGB_BAYER = 12U };
+enum class SEQ_FMT : INT32U {		UNKNOWN     =  0U,
+									UYVY422I    =  1U,
+									YUYV422I    =  2U,
+									YUV420SP    =  3U,
+									YUV444I	    =  4U,
+									YUV444P     =  5U,
+									BGR444I     =  6U,
+									BGR444P     =  7U,
+									RGB444I     =  8U,
+									RGB444P     =  9U,
+									RCCC_BAYER  = 10U,
+									RCCB_BAYER  = 11U,
+									RGGB_BAYER  = 12U, 
+                                    MAX_SEQ_FMT = 13U };
 
 enum class SEQ_TYPE : INT32U {		UNK =  0U,
 									U08 =  1U,
@@ -66,6 +67,8 @@ class ImgSeq : public FileStatus
 private:
     FILE_STATUS	status;
     STRING		name_file;
+    SEQ_FMT     seq_fmt;
+
     FILE*       fp;
 
 public:
@@ -75,6 +78,7 @@ public:
     void setStatus(const bool& rhs) = delete;
     void setNameFile() = delete;
     void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
+    void setSeqFmt(const INT32S rhs) noexcept { if((static_cast<int>(SEQ_FMT::UNKNOWN) < rhs) && (static_cast<int>(SEQ_FMT::MAX_SEQ_FMT) < rhs))   seq_fmt = static_cast<SEQ_FMT>(rhs); }
     /* getter */
     FILE_STATUS getStatus() const noexcept { return status; }
     STRING      getNameFile() const noexcept { return name_file; }
