@@ -78,10 +78,27 @@ public:
     void setStatus(const bool& rhs) = delete;
     void setNameFile() = delete;
     void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
+    void setSeqFmt() = delete;
+    void setSeqFmt(const STRING& rhs) noexcept {
+        if("SEQ_FMT_UYVY422I"        == rhs)	seq_fmt = SEQ_FMT::UYVY422I;
+    	else if("SEQ_FMT_YUYV422I"   == rhs)	seq_fmt = SEQ_FMT::YUYV422I;
+    	else if("SEQ_FMT_YUV420SP"   == rhs)	seq_fmt = SEQ_FMT::YUV420SP;
+    	else if("SEQ_FMT_YUV444I"    == rhs)	seq_fmt = SEQ_FMT::YUV444I;
+    	else if("SEQ_FMT_YUV444P"    == rhs)	seq_fmt = SEQ_FMT::YUV444P;
+    	else if("SEQ_FMT_BGR444I"    == rhs)	seq_fmt = SEQ_FMT::BGR444I;
+    	else if("SEQ_FMT_BGR444P"    == rhs)	seq_fmt = SEQ_FMT::BGR444P;
+    	else if("SEQ_FMT_RGB444I"    == rhs)	seq_fmt = SEQ_FMT::RGB444I;
+    	else if("SEQ_FMT_RGB444P"    == rhs)	seq_fmt = SEQ_FMT::RGB444P;
+    	else if("SEQ_FMT_RCCC_BAYER" == rhs)	seq_fmt = SEQ_FMT::RCCC_BAYER;
+    	else if("SEQ_FMT_RCCB_BAYER" == rhs)	seq_fmt = SEQ_FMT::RCCB_BAYER;
+    	else if("SEQ_FMT_RGGB_BAYER" == rhs)	seq_fmt = SEQ_FMT::RGGB_BAYER;
+    	else									seq_fmt = SEQ_FMT::UNKNOWN;
+    }
     void setSeqFmt(const INT32S rhs) noexcept { if((static_cast<int>(SEQ_FMT::UNKNOWN) < rhs) && (static_cast<int>(SEQ_FMT::MAX_SEQ_FMT) < rhs))   seq_fmt = static_cast<SEQ_FMT>(rhs); }
     /* getter */
     FILE_STATUS getStatus() const noexcept { return status; }
     STRING      getNameFile() const noexcept { return name_file; }
+    SEQ_FMT     getSeqFmt() const noexcept { return seq_fmt; }
     /* shower */
     friend OSTREAM& operator << (OSTREAM& os, const ImgSeq& rhs) noexcept{
         os << rhs.name_file << " - " << (FILE_STATUS::NOT_OPENED == rhs.status) ? "NOT_OPENED" : "IS_OPENED";
