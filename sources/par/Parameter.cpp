@@ -91,16 +91,18 @@ RET_CODE Parameter::parser(const STRING& inp_arg)
             std::getline(sstr_line, value);
             value.erase(remove_if(value.begin(), value.end(), isspace), value.end());
 
-            if("#MODE_TO_RUN_APP_SD"       == indicator)    app_sd.setRunMode(value);
-            if("#MODE_TO_RUN_APP_OD"       == indicator)	app_od.setRunMode(value);
-            if("#INPUT_CAMERA_SIZE_WIDTH"  == indicator)    setWid(std::stoi(value));
-            if("#INPUT_CAMERA_SIZE_HEIGHT" == indicator)    setHei(std::stoi(value));
-            if("#INPUT_CAMERA_SEQ_FORMAT"  == indicator)    img_seq.setSeqFmt(value);
-            if("#INPUT_CAMERA_SEQ_TYPE"    == indicator)    img_seq.setSeqType(value);
-
+            if("#MODE_TO_RUN_APP_SD"          == indicator) app_sd.setRunMode(value);
+            if("#MODE_TO_RUN_APP_OD"          == indicator) app_od.setRunMode(value);
+            if("#INPUT_CAMERA_SIZE_WIDTH"     == indicator) setWid(std::stoi(value));
+            if("#INPUT_CAMERA_SIZE_HEIGHT"    == indicator) setHei(std::stoi(value));
+            if("#INPUT_CAMERA_SEQ_FORMAT"     == indicator) img_seq.setSeqFmt(value);
+            if("#INPUT_CAMERA_SEQ_TYPE"       == indicator) img_seq.setSeqType(value);
+            if("#INPUT_CAMERA_SEQ_THROUGHPUT" == indicator) setTput(std::stoi(value));
+            if("#INPUT_CAMERA_PATH"           == indicator) setNamePath(value);
+            if("#INPUT_CAMERA_FILE_SEQ"       == indicator) setNameFile(value);
         }
     }
-    
+    ifs.close();
 
     return ret_status;
 }

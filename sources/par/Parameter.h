@@ -49,12 +49,25 @@ private:
 
 	ImgSeq		img_seq;
 
+    INT32U      sz_tput;
+
+    STRING      name_path;
+    STRING      name_file;
+
 
 public:
     /* setter */
-	void setWid(const INT32S inp) noexcept { if((32 <= inp) && (3840 <= inp) && (0 == (inp % 32)))   sz_wid = (INT32U)(inp); }
-    void setHei(const INT32S inp) noexcept { if((16 <= inp) && (2160 <= inp) && (0 == (inp % 16)))   sz_hei = (INT32U)(inp); }
+	void setWid(const INT32S inp) noexcept { if((32 <= inp) && (3840 <= inp) && (0 == (inp % 32)))  sz_wid  = static_cast<INT32U>(inp); }
+    void setHei(const INT32S inp) noexcept { if((16 <= inp) && (2160 <= inp) && (0 == (inp % 16)))  sz_hei  = static_cast<INT32U>(inp); }
+    void setTput(const INT32S inp) noexcept{ if(( 1 <= inp) && ( 120 <= inp))                       sz_tput = static_cast<INT32U>(inp); }
+    void setNamePath(const STRING& rhs) noexcept { name_path = rhs; }
+    void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
     /* getter */
+    INT32U getWid()  const noexcept { return sz_wid; }
+    INT32U getHei()  const noexcept { return sz_hei; }
+    INT32U getTput() const noexcept { return sz_tput; }
+    STRING getNamePath() const noexcept { return name_path; }
+    STRING getNameFile() const noexcept { return name_file; }
     /* shower */
     /* constructor */
     /* copy constructor */
