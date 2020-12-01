@@ -95,8 +95,8 @@ RET_CODE Parameter::parser(const STRING& inp_arg)
             if("#MODE_TO_RUN_APP_OD"       == indicator)	app_od.setRunMode(value);
             if("#INPUT_CAMERA_SIZE_WIDTH"  == indicator)    setWid(std::stoi(value));
             if("#INPUT_CAMERA_SIZE_HEIGHT" == indicator)    setHei(std::stoi(value));
-            if("#INPUT_CAMERA_SEQ_FORMAT"  == indicator)    setHei(std::stoi(value));
-
+            if("#INPUT_CAMERA_SEQ_FORMAT"  == indicator)    img_seq.setSeqFmt(value);
+            if("#INPUT_CAMERA_SEQ_TYPE"    == indicator)    img_seq.setSeqType(value);
 
         }
     }

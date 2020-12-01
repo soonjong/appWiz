@@ -54,7 +54,8 @@ enum class SEQ_TYPE : INT32U {		UNK =  0U,
 									S64 =  8U,
 									F16 =  9U,
 									F32 = 10U,
-									F64 = 11U };
+									F64 = 11U,
+                                    MAX = 12U };
 /** --------------------------------------------------------------------------------------------
     global macros
 --------------------------------------------------------------------------------------------- **/
@@ -68,6 +69,7 @@ private:
     FILE_STATUS	status;
     STRING		name_file;
     SEQ_FMT     seq_fmt;
+    SEQ_TYPE    seq_type;
 
     FILE*       fp;
 
@@ -95,6 +97,22 @@ public:
     	else									seq_fmt = SEQ_FMT::UNKNOWN;
     }
     void setSeqFmt(const INT32S rhs) noexcept { if((static_cast<int>(SEQ_FMT::UNKNOWN) < rhs) && (static_cast<int>(SEQ_FMT::MAX_SEQ_FMT) < rhs))   seq_fmt = static_cast<SEQ_FMT>(rhs); }
+    void setSeqType() = delete;
+    void setSeqType(const STRING& rhs) noexcept {
+        if("SEQ_TYPE_U08"      == rhs)  seq_type = SEQ_TYPE::U08;
+        else if("SEQ_TYPE_S08" == rhs)  seq_type = SEQ_TYPE::S08;
+        else if("SEQ_TYPE_U16" == rhs)  seq_type = SEQ_TYPE::U16;
+        else if("SEQ_TYPE_S16" == rhs)  seq_type = SEQ_TYPE::S16;
+        else if("SEQ_TYPE_U32" == rhs)  seq_type = SEQ_TYPE::U32;
+        else if("SEQ_TYPE_S32" == rhs)  seq_type = SEQ_TYPE::S32;
+        else if("SEQ_TYPE_U64" == rhs)  seq_type = SEQ_TYPE::U64;
+        else if("SEQ_TYPE_S64" == rhs)  seq_type = SEQ_TYPE::S64;
+        else if("SEQ_TYPE_F16" == rhs)  seq_type = SEQ_TYPE::F16;
+        else if("SEQ_TYPE_F32" == rhs)  seq_type = SEQ_TYPE::F32;
+        else if("SEQ_TYPE_F64" == rhs)  seq_type = SEQ_TYPE::F64;
+        else                            seq_type = SEQ_TYPE::UNK;
+    }
+    void seqSeqType(const INT32S rhs) noexcept { if((static_cast<int>(SEQ_TYPE::UNK) < rhs) && (static_cast<int>(SEQ_TYPE::MAX) < rhs)) seq_type = static_cast<SEQ_TYPE>(rhs); }
     /* getter */
     FILE_STATUS getStatus() const noexcept { return status; }
     STRING      getNameFile() const noexcept { return name_file; }
