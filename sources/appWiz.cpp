@@ -16,6 +16,7 @@
 #include "TypeDef.h"
 #include "RetCode.h"
 #include "par/Parameter.h"
+#include <thread>
 /** --------------------------------------------------------------------------------------------
     including library files
 -------------------------------------------------------------------------------------------- **/
@@ -57,6 +58,8 @@ int main(int argc, char* argv[])
 
 	if(RET_CODE::NO_ERROR == ret_status)
 	{
+        std::thread capture(par.getImgSeqCapture());
+        std::thread display(par.getImgSeqDisplay());
 
 	}
 

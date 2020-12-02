@@ -25,7 +25,7 @@
 
 
 ================================================================================================
-    INPUT [IMAGE SEQUENCE] SETTING
+    CAPTURE [IMAGE SEQUENCE] SETTING
 ------------------------------------------------------------------------------------------------
 |   @brief          input size infomation of image sequences                                   |
 |   @instruction    Frame size should be positive.                                             |
@@ -34,8 +34,8 @@
 |                   Max width is 3840 and max height is 2160.                                  |
 |                   Write down the accurate infomation                                         |
 ------------------------------------------------------------------------------------------------
-#INPUT_CAMERA_SIZE_WIDTH                1280
-#INPUT_CAMERA_SIZE_HEIGHT               720
+#CAPTURE_SIZE_WIDTH                     1280
+#CAPTURE_SIZE_HEIGHT                    720
 ------------------------------------------------------------------------------------------------
 |   @brief          input sequence format                                                      |
 |   @instruction    Select the correct input format number from bellow lists                   |
@@ -53,7 +53,7 @@
 |                    11: SEQ_FMT_RCCB_BAYER                                                    |
 |                    12: SEQ_FMT_RGGB_BAYER                                                    |
 ------------------------------------------------------------------------------------------------
-#INPUT_CAMERA_SEQ_FORMAT                SEQ_FMT_BGR444I
+#CAPTURE_SEQ_FORMAT                     SEQ_FMT_BGR444I
 ------------------------------------------------------------------------------------------------
 |   @brief          input sequence type                                                        |
 |   @instruction    Select the correct input sequence type number from bellow lists            |
@@ -70,18 +70,79 @@
 |                    10: SEQ_TYPE_F32                                                          |
 |                    11: SEQ_TYPE_F64                                                          |
 ------------------------------------------------------------------------------------------------
-#INPUT_CAMERA_SEQ_TYPE                  SEQ_TYPE_U08
+#CAPTURE_SEQ_TYPE                       SEQ_TYPE_U08
 ------------------------------------------------------------------------------------------------
-|   @brief          input camera throughput in Hz                                     |
+|   @brief          input CAPTURE throughput in Hz                                     |
 |   @instruction    bound: 1 <= throughput <= 120                                                |
 ------------------------------------------------------------------------------------------------
-#INPUT_CAMERA_SEQ_THROUGHPUT            30
+#CAPTURE_SEQ_THROUGHPUT                 30
 ------------------------------------------------------------------------------------------------
-|   @brief          input camera file position and name                                        |
+|   @brief          input CAPTURE file position and name                                        |
 |   @instruction    absolute file path is recommended.                                         |
 ------------------------------------------------------------------------------------------------
-#INPUT_CAMERA_PATH                      /home/soonjong/projects/appWiz/input/youtube
-#INPUT_CAMERA_FILE_SEQ                  test.bin
+#CAPTURE_PATH                           /home/soonjong/projects/appWiz/capture/youtube
+#CAPTURE_FILE_SEQ                       test.bin
+================================================================================================
+
+
+================================================================================================
+    DISPLAY [IMAGE SEQUENCE] SETTING
+------------------------------------------------------------------------------------------------
+|   @brief          display size infomation of image sequences                                   |
+|   @instruction    Frame size should be positive.                                             |
+|                   Width size should be a multiple of 32.                                     |
+|                   Height size should be a multiple of 16.                                    |
+|                   Max width is 3840 and max height is 2160.                                  |
+|                   Write down the accurate infomation                                         |
+------------------------------------------------------------------------------------------------
+#DISPLAY_SIZE_WIDTH               1920
+#DISPLAY_SIZE_HEIGHT              1080
+------------------------------------------------------------------------------------------------
+|   @brief          display sequence format                                                      |
+|   @instruction    Select the correct display format number from bellow lists                   |
+|                   N/A: SEQ_FMT_UNKNOWN                                                       |
+|                     1: SEQ_FMT_UYVY422I                                                      |
+|                     2: SEQ_FMT_YUYV422I                                                      |
+|                     3: SEQ_FMT_YUV420SP                                                      |
+|                     4: SEQ_FMT_YUV444I                                                       |
+|                     5: SEQ_FMT_YUV444P                                                       |
+|                     6: SEQ_FMT_BGR444I                                                       |
+|                     7: SEQ_FMT_BGR444P                                                       |
+|                     8: SEQ_FMT_RGB444I                                                       |
+|                     9: SEQ_FMT_RGB444P                                                       |
+|                    10: SEQ_FMT_RCCC_BAYER                                                    |
+|                    11: SEQ_FMT_RCCB_BAYER                                                    |
+|                    12: SEQ_FMT_RGGB_BAYER                                                    |
+------------------------------------------------------------------------------------------------
+#DISPLAY_SEQ_FORMAT               SEQ_FMT_BGR444I
+------------------------------------------------------------------------------------------------
+|   @brief          display sequence type                                                        |
+|   @instruction    Select the correct display sequence type number from bellow lists            |
+|                   N/A: SEQ_TYPE_UNK                                                          |
+|                     1: SEQ_TYPE_U08                                                          |
+|                     2: SEQ_TYPE_S08                                                          |
+|                     3: SEQ_TYPE_U16                                                          |
+|                     4: SEQ_TYPE_S16                                                          |
+|                     5: SEQ_TYPE_U32                                                          |
+|                     6: SEQ_TYPE_S32                                                          |
+|                     7: SEQ_TYPE_U64                                                          |
+|                     8: SEQ_TYPE_S64                                                          |
+|                     9: SEQ_TYPE_F16                                                          |
+|                    10: SEQ_TYPE_F32                                                          |
+|                    11: SEQ_TYPE_F64                                                          |
+------------------------------------------------------------------------------------------------
+#DISPLAY_SEQ_TYPE                 SEQ_TYPE_U08
+------------------------------------------------------------------------------------------------
+|   @brief          display CAPTURE throughput in Hz                                     |
+|   @instruction    bound: 1 <= throughput <= 120                                                |
+------------------------------------------------------------------------------------------------
+#CAPTURE_SEQ_THROUGHPUT           30
+------------------------------------------------------------------------------------------------
+|   @brief          display CAPTURE file position and name                                        |
+|   @instruction    absolute file path is recommended.                                         |
+------------------------------------------------------------------------------------------------
+#CAPTURE_PATH                     /home/soonjong/projects/appWiz/display/youtube
+#CAPTURE_FILE_SEQ                 test.bin
 ================================================================================================
 
 

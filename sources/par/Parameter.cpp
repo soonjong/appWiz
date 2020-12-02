@@ -91,15 +91,22 @@ RET_CODE Parameter::parser(const STRING& inp_arg)
             std::getline(sstr_line, value);
             value.erase(remove_if(value.begin(), value.end(), isspace), value.end());
 
-            if("#MODE_TO_RUN_APP_SD"          == indicator) app_sd.setRunMode(value);
-            if("#MODE_TO_RUN_APP_OD"          == indicator) app_od.setRunMode(value);
-            if("#INPUT_CAMERA_SIZE_WIDTH"     == indicator) setWid(std::stoi(value));
-            if("#INPUT_CAMERA_SIZE_HEIGHT"    == indicator) setHei(std::stoi(value));
-            if("#INPUT_CAMERA_SEQ_FORMAT"     == indicator) img_seq.setSeqFmt(value);
-            if("#INPUT_CAMERA_SEQ_TYPE"       == indicator) img_seq.setSeqType(value);
-            if("#INPUT_CAMERA_SEQ_THROUGHPUT" == indicator) setTput(std::stoi(value));
-            if("#INPUT_CAMERA_PATH"           == indicator) setNamePath(value);
-            if("#INPUT_CAMERA_FILE_SEQ"       == indicator) setNameFile(value);
+            if("#MODE_TO_RUN_APP_SD"        == indicator) app_sd.setRunMode(value);
+            if("#MODE_TO_RUN_APP_OD"        == indicator) app_od.setRunMode(value);
+            if("#CAPTURE_SIZE_WIDTH"        == indicator) capture_img_seq.setWid(std::stoi(value));
+            if("#CAPTURE_SIZE_HEIGHT"       == indicator) capture_img_seq.setHei(std::stoi(value));
+            if("#CAPTURE_SEQ_FORMAT"        == indicator) capture_img_seq.setSeqFmt(value);
+            if("#CAPTURE_SEQ_TYPE"          == indicator) capture_img_seq.setSeqType(value);
+            if("#CAPTURE_SEQ_THROUGHPUT"    == indicator) capture_img_seq.setTput(std::stoi(value));
+            if("#CAPTURE_PATH"              == indicator) capture_img_seq.setNamePath(value);
+            if("#CAPTURE_FILE_SEQ"          == indicator) capture_img_seq.setNameFile(value);
+            if("#DISPLAY_SIZE_WIDTH"        == indicator) display_img_seq.setWid(std::stoi(value));
+            if("#DISPLAY_SIZE_HEIGHT"       == indicator) display_img_seq.setHei(std::stoi(value));
+            if("#DISPLAY_SEQ_FORMAT"        == indicator) display_img_seq.setSeqFmt(value);
+            if("#DISPLAY_SEQ_TYPE"          == indicator) display_img_seq.setSeqType(value);
+            if("#DISPLAY_SEQ_THROUGHPUT"    == indicator) display_img_seq.setTput(std::stoi(value));
+            if("#DISPLAY_PATH"              == indicator) display_img_seq.setNamePath(value);
+            if("#DISPLAY_FILE_SEQ"          == indicator) display_img_seq.setNameFile(value);
         }
     }
     ifs.close();

@@ -71,6 +71,14 @@ private:
     SEQ_FMT     seq_fmt;
     SEQ_TYPE    seq_type;
 
+	INT32U		sz_wid;
+	INT32U		sz_hei;
+
+    INT32U      sz_tput;
+
+    STRING      name_path;
+    STRING      name_file;
+
     FILE*       fp;
 
 public:
@@ -113,10 +121,20 @@ public:
         else                            seq_type = SEQ_TYPE::UNK;
     }
     void seqSeqType(const INT32S rhs) noexcept { if((static_cast<int>(SEQ_TYPE::UNK) < rhs) && (static_cast<int>(SEQ_TYPE::MAX) < rhs)) seq_type = static_cast<SEQ_TYPE>(rhs); }
+	void setWid(const INT32S inp) noexcept { if((32 <= inp) && (3840 <= inp) && (0 == (inp % 32)))  sz_wid  = static_cast<INT32U>(inp); }
+    void setHei(const INT32S inp) noexcept { if((16 <= inp) && (2160 <= inp) && (0 == (inp % 16)))  sz_hei  = static_cast<INT32U>(inp); }
+    void setTput(const INT32S inp) noexcept{ if(( 1 <= inp) && ( 120 <= inp))                       sz_tput = static_cast<INT32U>(inp); }
+    void setNamePath(const STRING& rhs) noexcept { name_path = rhs; }
+    void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
     /* getter */
     FILE_STATUS getStatus() const noexcept { return status; }
     STRING      getNameFile() const noexcept { return name_file; }
     SEQ_FMT     getSeqFmt() const noexcept { return seq_fmt; }
+    INT32U      getWid()  const noexcept { return sz_wid; }
+    INT32U      getHei()  const noexcept { return sz_hei; }
+    INT32U      getTput() const noexcept { return sz_tput; }
+    STRING      getNamePath() const noexcept { return name_path; }
+    STRING      getNameFile() const noexcept { return name_file; }
     /* shower */
     friend OSTREAM& operator << (OSTREAM& os, const ImgSeq& rhs) noexcept{
         os << rhs.name_file << " - " << (FILE_STATUS::NOT_OPENED == rhs.status) ? "NOT_OPENED" : "IS_OPENED";
