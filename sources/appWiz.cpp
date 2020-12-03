@@ -17,6 +17,7 @@
 #include "RetCode.h"
 #include "par/Parameter.h"
 #include <thread>
+#include <mutex>
 /** --------------------------------------------------------------------------------------------
     including library files
 -------------------------------------------------------------------------------------------- **/
@@ -58,8 +59,10 @@ int main(int argc, char* argv[])
 
 	if(RET_CODE::NO_ERROR == ret_status)
 	{
-        std::thread capture(par.getImgSeqCapture());
-        std::thread display(par.getImgSeqDisplay());
+        std::mutex lock_capture;
+        std::mutex lock_display;
+        std::thread capture(std::ref(par), std::ref(lock_capture));
+        std::thread display(std::ref(par), std::ref(lock_display));
 
 	}
 
@@ -68,19 +71,40 @@ int main(int argc, char* argv[])
 
 	}
 
-	if(RET_CODE::NO_ERROR == ret_status)
-	{
-
-	}
-
-	if(RET_CODE::NO_ERROR == ret_status)
-	{
-
-	}
 
 	return ((RET_CODE::NO_ERROR == ret_status) ? 0 : 1);
 }
 
+void capture(Parameter& inp_par, std::mutex& mtx)
+{
+    ImgSeq& img_seq_capture = inp_par.getImgSeqCapture();
+
+    const INT32U next_buf = img_seq_capture.getIdxNextBuf();
+
+    //capture with idx next buf!! 
+
+    mtx.lock();
+    img_seq_capture.switchIdxBuf();
+    mtx.unlock();
+}
+
+void app_od_preproc(Parameter& inp_par, std::mutex& mtx)
+{
+    const INT32U capture_buf = inp_par.getImgSeqCapture().getIdxCurrBuf();
+ 
+    mtx.lock();
+    mtx.unlock();
+}
+
+void display(Parameter& inp_par, std::mutex& mtx)
+{
+    ImgSeq& img_seq_display = inp_par.getImgSeqDisplay();
+
+
+    mtx.lock();
+    img_seq_display.switchIdxBuf();
+    mtx.unlock();
+}
 /** --------------------------------------------------------------------------------------------
     END OF FILE
 -------------------------------------------------------------------------------------------- **/

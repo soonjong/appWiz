@@ -52,10 +52,10 @@ private:
 public:
     /* setter */
     /* getter */
-    const RunMode* getRunModeAppSd() const noexcept { return &app_sd; }
-    const RunMode* getRunModeAppOd() const noexcept { return &app_od; }
-    const ImgSeq*  getImgSeqCapture() const noexcept { return &capture_img_seq; }
-    const ImgSeq*  getImgSeqDisplay() const noexcept { return &display_img_seq; }
+    RunMode& getRunModeAppSd() noexcept { return &app_sd; }
+    RunMode& getRunModeAppOd() noexcept { return &app_od; }
+    ImgSeq&  getImgSeqCapture() noexcept { return &capture_img_seq; }
+    ImgSeq&  getImgSeqDisplay() noexcept { return &display_img_seq; }
     /* shower */
     /* constructor */
     /* copy constructor */

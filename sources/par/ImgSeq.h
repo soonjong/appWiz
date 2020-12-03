@@ -67,7 +67,6 @@ class ImgSeq : public FileStatus
 {
 private:
     FILE_STATUS	status;
-    STRING		name_file;
     SEQ_FMT     seq_fmt;
     SEQ_TYPE    seq_type;
 
@@ -79,15 +78,36 @@ private:
     STRING      name_path;
     STRING      name_file;
 
+    INT32U      idx_curr_buf;
+    INT32U      idx_next_buf;
+
+    INT32U      is_captured;
+
+    INT8U*      p_curr_buf;
+    INT8U*      p_next_buf;
+
     FILE*       fp;
 
 public:
+    /* functions */
+    void switchIdxBuf(){    idx_curr_buf = (idx_curr_buf + 1U) & 0x01;
+                            idx_next_buf = (idx_next_buf + 1U) & 0x01; }
+    /* constructor */
+    explicit ImgSeq() noexcept : status(FILE_STATUS::NOT_OPENED), seq_fmt(SEQ_FMT::UNKNOWN), seq_type(SEQ_TYPE::UNK), sz_wid(0U), sz_hei(0U), sz_tput(0U), name_path(""), name_file(""), idx_curr_buf(0U), idx_next_buf(1U) {}
+    /* copy constructor */
+    explicit ImgSeq(const ImgSeq& rhs) = delete;
+    /* move constructor */
+    explicit ImgSeq(ImgSeq&& rhs) = delete;
+    /* copy assignment operator */
+    ImgSeq& operator =(const ImgSeq& rhs) = delete;
+    /* move assignment operator */
+    ImgSeq& operator =(ImgSeq&& rhs) = delete;
+    /* destructor */
+    virtual ~ImgSeq() {}
     /* setter */
     void setStatus() = delete;
     void setStatus(const FILE_STATUS& rhs) noexcept { status = rhs; }
     void setStatus(const bool& rhs) = delete;
-    void setNameFile() = delete;
-    void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
     void setSeqFmt() = delete;
     void setSeqFmt(const STRING& rhs) noexcept {
         if("SEQ_FMT_UYVY422I"        == rhs)	seq_fmt = SEQ_FMT::UYVY422I;
@@ -124,7 +144,9 @@ public:
 	void setWid(const INT32S inp) noexcept { if((32 <= inp) && (3840 <= inp) && (0 == (inp % 32)))  sz_wid  = static_cast<INT32U>(inp); }
     void setHei(const INT32S inp) noexcept { if((16 <= inp) && (2160 <= inp) && (0 == (inp % 16)))  sz_hei  = static_cast<INT32U>(inp); }
     void setTput(const INT32S inp) noexcept{ if(( 1 <= inp) && ( 120 <= inp))                       sz_tput = static_cast<INT32U>(inp); }
+    void setNamePath() = delete;
     void setNamePath(const STRING& rhs) noexcept { name_path = rhs; }
+    void setNameFile() = delete;
     void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
     /* getter */
     FILE_STATUS getStatus() const noexcept { return status; }
@@ -135,24 +157,13 @@ public:
     INT32U      getTput() const noexcept { return sz_tput; }
     STRING      getNamePath() const noexcept { return name_path; }
     STRING      getNameFile() const noexcept { return name_file; }
+    INT32U      getIdxCurrBuf() const noexcept { return idx_curr_buf; }
+    INT32U      getIdxNextBuf() const noexcept { return idx_next_buf; }
     /* shower */
     friend OSTREAM& operator << (OSTREAM& os, const ImgSeq& rhs) noexcept{
         os << rhs.name_file << " - " << (FILE_STATUS::NOT_OPENED == rhs.status) ? "NOT_OPENED" : "IS_OPENED";
         return os;
     }
-    /* constructor */
-    explicit ImgSeq() noexcept : status(FILE_STATUS::NOT_OPENED), name_file(""), fp(nullptr) {}
-    /* copy constructor */
-    explicit ImgSeq(const ImgSeq& rhs) = delete;
-    /* move constructor */
-    explicit ImgSeq(ImgSeq&& rhs) = delete;
-    /* copy assignment operator */
-    ImgSeq& operator =(const ImgSeq& rhs) = delete;
-    /* move assignment operator */
-    ImgSeq& operator =(ImgSeq&& rhs) = delete;
-    /* destructor */
-    virtual ~ImgSeq() {}
-    /* functions */
 };
 
 /** --------------------------------------------------------------------------------------------
