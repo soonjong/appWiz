@@ -75,6 +75,18 @@ int main(int argc, char* argv[])
 	return ((RET_CODE::NO_ERROR == ret_status) ? 0 : 1);
 }
 
+void app_od_preproc(Parameter& inp_par, std::mutex& mtx)
+{
+    const INT32U inp_buf = inp_par.getImgSeqCapture().getIdxCurrBuf();
+ 
+    mtx.lock();
+    mtx.unlock();
+}
+
+void app_od_mainproc(Parameter& inp_par, std::mutex&&mtx)
+{
+    const INT32U capture
+}
 void capture(Parameter& inp_par, std::mutex& mtx)
 {
     ImgSeq& img_seq_capture = inp_par.getImgSeqCapture();
@@ -85,14 +97,6 @@ void capture(Parameter& inp_par, std::mutex& mtx)
 
     mtx.lock();
     img_seq_capture.switchIdxBuf();
-    mtx.unlock();
-}
-
-void app_od_preproc(Parameter& inp_par, std::mutex& mtx)
-{
-    const INT32U capture_buf = inp_par.getImgSeqCapture().getIdxCurrBuf();
- 
-    mtx.lock();
     mtx.unlock();
 }
 
