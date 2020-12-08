@@ -52,10 +52,10 @@ private:
 public:
     /* setter */
     /* getter */
-    RunMode& getRunModeAppSd() noexcept { return &app_sd; }
-    RunMode& getRunModeAppOd() noexcept { return &app_od; }
-    ImgSeq&  getImgSeqCapture() noexcept { return &capture_img_seq; }
-    ImgSeq&  getImgSeqDisplay() noexcept { return &display_img_seq; }
+    RunMode& getRunModeAppSd() noexcept { return app_sd; }
+    RunMode& getRunModeAppOd() noexcept { return app_od; }
+    ImgSeq&  getImgSeqCapture() noexcept { return capture_img_seq; }
+    ImgSeq&  getImgSeqDisplay() noexcept { return display_img_seq; }
     /* shower */
     /* constructor */
     /* copy constructor */

@@ -65,7 +65,7 @@ public:
     /* copy constructor */
     explicit DualBuffer(const DualBuffer& rhs) = delete;
     /* move constructor */
-    explicit DualBuffer(ImgSeq&& rhs) = delete;
+    explicit DualBuffer(DualBuffer&& rhs) = delete;
     /* copy assignment operator */
     DualBuffer& operator =(const DualBuffer& rhs) = delete;
     /* move assignment operator */
