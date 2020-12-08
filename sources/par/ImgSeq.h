@@ -150,7 +150,6 @@ public:
     void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
     /* getter */
     FILE_STATUS getStatus() const noexcept { return status; }
-    STRING      getNameFile() const noexcept { return name_file; }
     SEQ_FMT     getSeqFmt() const noexcept { return seq_fmt; }
     INT32U      getWid()  const noexcept { return sz_wid; }
     INT32U      getHei()  const noexcept { return sz_hei; }

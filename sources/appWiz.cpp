@@ -45,7 +45,10 @@
 /** --------------------------------------------------------------------------------------------
     file scope function prototypes
 -------------------------------------------------------------------------------------------- **/
-
+void app_od_preproc(Parameter& inp_par, std::mutex& mtx);
+void app_od_mainproc(Parameter& inp_par, std::mutex&&mtx);
+void app_capture(Parameter& inp_par, std::mutex& mtx);
+void app_display(Parameter& inp_par, std::mutex& mtx);
 /** --------------------------------------------------------------------------------------------
     file scope function lists
 -------------------------------------------------------------------------------------------- **/
@@ -61,8 +64,8 @@ int main(int argc, char* argv[])
 	{
         std::mutex lock_capture;
         std::mutex lock_display;
-        std::thread capture(std::ref(par), std::ref(lock_capture));
-        std::thread display(std::ref(par), std::ref(lock_display));
+        std::thread thr_capture(app_capture, std::ref(par), std::ref(lock_capture));
+        std::thread thr_display(app_display, std::ref(par), std::ref(lock_display));
 
 	}
 
@@ -85,13 +88,13 @@ void app_od_preproc(Parameter& inp_par, std::mutex& mtx)
 
 void app_od_mainproc(Parameter& inp_par, std::mutex&&mtx)
 {
-    const INT32U capture
+    ;//const INT32U capture;
 }
-void capture(Parameter& inp_par, std::mutex& mtx)
+void app_capture(Parameter& inp_par, std::mutex& mtx)
 {
     ImgSeq& img_seq_capture = inp_par.getImgSeqCapture();
 
-    const INT32U next_buf = img_seq_capture.getIdxNextBuf();
+    //const INT32U next_buf = img_seq_capture.getIdxNextBuf();
 
     //capture with idx next buf!! 
 
@@ -100,10 +103,9 @@ void capture(Parameter& inp_par, std::mutex& mtx)
     mtx.unlock();
 }
 
-void display(Parameter& inp_par, std::mutex& mtx)
+void app_display(Parameter& inp_par, std::mutex& mtx)
 {
     ImgSeq& img_seq_display = inp_par.getImgSeqDisplay();
-
 
     mtx.lock();
     img_seq_display.switchIdxBuf();
