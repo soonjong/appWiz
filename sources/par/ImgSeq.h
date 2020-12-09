@@ -24,37 +24,37 @@ extern "C" {
 /** --------------------------------------------------------------------------------------------
     global constants
 -------------------------------------------------------------------------------------------- **/
-
+const INT32U sz_elmt_map[] = { 0U, 1U, 1U, 2U, 2U, 4U, 4U, 6U, 6U, 2U, 4U, 8U, 0U};
 /** --------------------------------------------------------------------------------------------
     global enumerations
 -------------------------------------------------------------------------------------------- **/
-enum class SEQ_FMT : INT32U {		UNKNOWN     =  0U,
-									UYVY422I    =  1U,
-									YUYV422I    =  2U,
-									YUV420SP    =  3U,
-									YUV444I	    =  4U,
-									YUV444P     =  5U,
-									BGR444I     =  6U,
-									BGR444P     =  7U,
-									RGB444I     =  8U,
-									RGB444P     =  9U,
-									RCCC_BAYER  = 10U,
-									RCCB_BAYER  = 11U,
-									RGGB_BAYER  = 12U, 
+enum class SEQ_FMT : INT32U {       UNKNOWN     =  0U,
+                                    UYVY422I    =  1U,
+                                    YUYV422I    =  2U,
+                                    YUV420SP    =  3U,
+                                    YUV444I	    =  4U,
+                                    YUV444P     =  5U,
+                                    BGR444I     =  6U,
+                                    BGR444P     =  7U,
+                                    RGB444I     =  8U,
+                                    RGB444P     =  9U,
+                                    RCCC_BAYER  = 10U,
+                                    RCCB_BAYER  = 11U,
+                                    RGGB_BAYER  = 12U, 
                                     MAX_SEQ_FMT = 13U };
 
-enum class SEQ_TYPE : INT32U {		UNK =  0U,
-									U08 =  1U,
-									S08 =  2U,
-									U16 =  3U,
-									S16 =  4U,
-									U32 =  5U,
-									S32 =  6U,
-									U64 =  7U,
-									S64 =  8U,
-									F16 =  9U,
-									F32 = 10U,
-									F64 = 11U,
+enum class SEQ_TYPE : INT32U {      UNK =  0U,
+                                    U08 =  1U,
+                                    S08 =  2U,
+                                    U16 =  3U,
+                                    S16 =  4U,
+                                    U32 =  5U,
+                                    S32 =  6U,
+                                    U64 =  7U,
+                                    S64 =  8U,
+                                    F16 =  9U,
+                                    F32 = 10U,
+                                    F64 = 11U,
                                     MAX = 12U };
 /** --------------------------------------------------------------------------------------------
     global macros
@@ -70,9 +70,6 @@ private:
     SEQ_FMT     seq_fmt;
     SEQ_TYPE    seq_type;
 
-	INT32U		sz_wid;
-	INT32U		sz_hei;
-
     INT32U      sz_tput;
 
     STRING      name_path;
@@ -81,19 +78,21 @@ private:
     INT32U      idx_curr_buf;
     INT32U      idx_next_buf;
 
-    INT32U      is_captured;
+    INT32U      sz_wid;
+    INT32U      sz_hei;
+    INT32U      sz_elmt;
 
-    INT8U*      p_curr_buf;
-    INT8U*      p_next_buf;
+    INT8U*      p_buf[2];
+
+    INT32U      is_captured;
 
     FILE*       fp;
 
 public:
     /* functions */
-    void switchIdxBuf(){    idx_curr_buf = (idx_curr_buf + 1U) & 0x01;
-                            idx_next_buf = (idx_next_buf + 1U) & 0x01; }
+    void switchIdxBuf();
     /* constructor */
-    explicit ImgSeq() noexcept : status(FILE_STATUS::NOT_OPENED), seq_fmt(SEQ_FMT::UNKNOWN), seq_type(SEQ_TYPE::UNK), sz_wid(0U), sz_hei(0U), sz_tput(0U), name_path(""), name_file(""), idx_curr_buf(0U), idx_next_buf(1U) {}
+    explicit ImgSeq() noexcept;// : status(FILE_STATUS::NOT_OPENED), seq_fmt(SEQ_FMT::UNKNOWN), seq_type(SEQ_TYPE::UNK), sz_wid(0U), sz_hei(0U), sz_tput(0U), name_path(""), name_file(""), idx_curr_buf(0U), idx_next_buf(1U)
     /* copy constructor */
     explicit ImgSeq(const ImgSeq& rhs) = delete;
     /* move constructor */
@@ -103,51 +102,24 @@ public:
     /* move assignment operator */
     ImgSeq& operator =(ImgSeq&& rhs) = delete;
     /* destructor */
-    virtual ~ImgSeq() {}
+    virtual ~ImgSeq();
     /* setter */
     void setStatus() = delete;
-    void setStatus(const FILE_STATUS& rhs) noexcept { status = rhs; }
+    void setStatus(const FILE_STATUS& rhs) noexcept;
     void setStatus(const bool& rhs) = delete;
     void setSeqFmt() = delete;
-    void setSeqFmt(const STRING& rhs) noexcept {
-        if("SEQ_FMT_UYVY422I"        == rhs)	seq_fmt = SEQ_FMT::UYVY422I;
-    	else if("SEQ_FMT_YUYV422I"   == rhs)	seq_fmt = SEQ_FMT::YUYV422I;
-    	else if("SEQ_FMT_YUV420SP"   == rhs)	seq_fmt = SEQ_FMT::YUV420SP;
-    	else if("SEQ_FMT_YUV444I"    == rhs)	seq_fmt = SEQ_FMT::YUV444I;
-    	else if("SEQ_FMT_YUV444P"    == rhs)	seq_fmt = SEQ_FMT::YUV444P;
-    	else if("SEQ_FMT_BGR444I"    == rhs)	seq_fmt = SEQ_FMT::BGR444I;
-    	else if("SEQ_FMT_BGR444P"    == rhs)	seq_fmt = SEQ_FMT::BGR444P;
-    	else if("SEQ_FMT_RGB444I"    == rhs)	seq_fmt = SEQ_FMT::RGB444I;
-    	else if("SEQ_FMT_RGB444P"    == rhs)	seq_fmt = SEQ_FMT::RGB444P;
-    	else if("SEQ_FMT_RCCC_BAYER" == rhs)	seq_fmt = SEQ_FMT::RCCC_BAYER;
-    	else if("SEQ_FMT_RCCB_BAYER" == rhs)	seq_fmt = SEQ_FMT::RCCB_BAYER;
-    	else if("SEQ_FMT_RGGB_BAYER" == rhs)	seq_fmt = SEQ_FMT::RGGB_BAYER;
-    	else									seq_fmt = SEQ_FMT::UNKNOWN;
-    }
-    void setSeqFmt(const INT32S rhs) noexcept { if((static_cast<int>(SEQ_FMT::UNKNOWN) < rhs) && (static_cast<int>(SEQ_FMT::MAX_SEQ_FMT) < rhs))   seq_fmt = static_cast<SEQ_FMT>(rhs); }
+    void setSeqFmt(const STRING& rhs) noexcept;
+    void setSeqFmt(const INT32S rhs) noexcept;
     void setSeqType() = delete;
-    void setSeqType(const STRING& rhs) noexcept {
-        if("SEQ_TYPE_U08"      == rhs)  seq_type = SEQ_TYPE::U08;
-        else if("SEQ_TYPE_S08" == rhs)  seq_type = SEQ_TYPE::S08;
-        else if("SEQ_TYPE_U16" == rhs)  seq_type = SEQ_TYPE::U16;
-        else if("SEQ_TYPE_S16" == rhs)  seq_type = SEQ_TYPE::S16;
-        else if("SEQ_TYPE_U32" == rhs)  seq_type = SEQ_TYPE::U32;
-        else if("SEQ_TYPE_S32" == rhs)  seq_type = SEQ_TYPE::S32;
-        else if("SEQ_TYPE_U64" == rhs)  seq_type = SEQ_TYPE::U64;
-        else if("SEQ_TYPE_S64" == rhs)  seq_type = SEQ_TYPE::S64;
-        else if("SEQ_TYPE_F16" == rhs)  seq_type = SEQ_TYPE::F16;
-        else if("SEQ_TYPE_F32" == rhs)  seq_type = SEQ_TYPE::F32;
-        else if("SEQ_TYPE_F64" == rhs)  seq_type = SEQ_TYPE::F64;
-        else                            seq_type = SEQ_TYPE::UNK;
-    }
-    void seqSeqType(const INT32S rhs) noexcept { if((static_cast<int>(SEQ_TYPE::UNK) < rhs) && (static_cast<int>(SEQ_TYPE::MAX) < rhs)) seq_type = static_cast<SEQ_TYPE>(rhs); }
-	void setWid(const INT32S inp) noexcept { if((32 <= inp) && (3840 <= inp) && (0 == (inp % 32)))  sz_wid  = static_cast<INT32U>(inp); }
-    void setHei(const INT32S inp) noexcept { if((16 <= inp) && (2160 <= inp) && (0 == (inp % 16)))  sz_hei  = static_cast<INT32U>(inp); }
-    void setTput(const INT32S inp) noexcept{ if(( 1 <= inp) && ( 120 <= inp))                       sz_tput = static_cast<INT32U>(inp); }
+    void setSeqType(const STRING& rhs) noexcept;
+    void seqSeqType(const INT32S rhs) noexcept;
+    void setWid(const INT32S inp) noexcept;
+    void setHei(const INT32S inp) noexcept;
+    void setTput(const INT32S inp) noexcept;
     void setNamePath() = delete;
-    void setNamePath(const STRING& rhs) noexcept { name_path = rhs; }
+    void setNamePath(const STRING& rhs) noexcept ;
     void setNameFile() = delete;
-    void setNameFile(const STRING& rhs) noexcept { name_file = rhs; }
+    void setNameFile(const STRING& rhs) noexcept;
     /* getter */
     FILE_STATUS getStatus() const noexcept { return status; }
     SEQ_FMT     getSeqFmt() const noexcept { return seq_fmt; }
@@ -159,10 +131,7 @@ public:
     INT32U      getIdxCurrBuf() const noexcept { return idx_curr_buf; }
     INT32U      getIdxNextBuf() const noexcept { return idx_next_buf; }
     /* shower */
-    friend OSTREAM& operator << (OSTREAM& os, const ImgSeq& rhs) noexcept{
-        os << rhs.name_file << " - " << (FILE_STATUS::NOT_OPENED == rhs.status) ? "NOT_OPENED" : "IS_OPENED";
-        return os;
-    }
+    friend OSTREAM& operator << (OSTREAM& os, const ImgSeq& rhs) noexcept;
 };
 
 /** --------------------------------------------------------------------------------------------
