@@ -18,6 +18,7 @@
 #include "par/Parameter.h"
 #include <thread>
 #include <mutex>
+#include <condition_variable>
 /** --------------------------------------------------------------------------------------------
     including library files
 -------------------------------------------------------------------------------------------- **/
@@ -47,8 +48,8 @@
 -------------------------------------------------------------------------------------------- **/
 void app_od_preproc(Parameter& inp_par, std::mutex& mtx);
 void app_od_mainproc(Parameter& inp_par, std::mutex&&mtx);
-void app_capture(Parameter& inp_par, std::mutex& mtx);
-void app_display(Parameter& inp_par, std::mutex& mtx);
+void app_capture(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv);
+void app_display(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv);
 /** --------------------------------------------------------------------------------------------
     file scope function lists
 -------------------------------------------------------------------------------------------- **/
@@ -62,10 +63,13 @@ int main(int argc, char* argv[])
 
 	if(RET_CODE::NO_ERROR == ret_status)
 	{
-        std::mutex lock_capture;
-        std::mutex lock_display;
-        std::thread thr_capture(app_capture, std::ref(par), std::ref(lock_capture));
-        std::thread thr_display(app_display, std::ref(par), std::ref(lock_display));
+        std::mutex             	mtx_capture;
+        std::condition_variable	cv_capture;
+        std::mutex				mtx_display;
+        std::condition_variable cv_display;
+
+        std::thread thr_capture(app_capture, std::ref(par), std::ref(mtx_capture), std::ref(cv_capture));
+        std::thread thr_display(app_display, std::ref(par), std::ref(mtx_display), std::ref(cv_display));
 
 	}
 
@@ -90,7 +94,7 @@ void app_od_mainproc(Parameter& inp_par, std::mutex&&mtx)
 {
     ;//const INT32U capture;
 }
-void app_capture(Parameter& inp_par, std::mutex& mtx)
+void app_capture(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv)
 {
     ImgSeq& img_seq_capture = inp_par.getImgSeqCapture();
 
@@ -103,7 +107,7 @@ void app_capture(Parameter& inp_par, std::mutex& mtx)
     mtx.unlock();
 }
 
-void app_display(Parameter& inp_par, std::mutex& mtx)
+void app_display(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv)
 {
     ImgSeq& img_seq_display = inp_par.getImgSeqDisplay();
 
