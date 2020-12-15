@@ -46,10 +46,10 @@
 /** --------------------------------------------------------------------------------------------
     file scope function prototypes
 -------------------------------------------------------------------------------------------- **/
-void app_od_preproc(Parameter& inp_par, std::mutex& mtx);
-void app_od_mainproc(Parameter& inp_par, std::mutex&&mtx);
-void app_capture(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv);
-void app_display(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv);
+void app_od_preproc(Parameter& inp_par);
+void app_od_mainproc(Parameter& inp_par);
+void app_capture(Parameter& inp_par);
+void app_display(Parameter& inp_par);
 /** --------------------------------------------------------------------------------------------
     file scope function lists
 -------------------------------------------------------------------------------------------- **/
@@ -63,14 +63,7 @@ int main(int argc, char* argv[])
 
 	if(RET_CODE::NO_ERROR == ret_status)
 	{
-        std::mutex             	mtx_capture;
-        std::condition_variable	cv_capture;
-        std::mutex				mtx_display;
-        std::condition_variable cv_display;
-
-        std::thread thr_capture(app_capture, std::ref(par), std::ref(mtx_capture), std::ref(cv_capture));
-        std::thread thr_display(app_display, std::ref(par), std::ref(mtx_display), std::ref(cv_display));
-
+        app_capture(par);
 	}
 
 	if(RET_CODE::NO_ERROR == ret_status)
@@ -82,38 +75,25 @@ int main(int argc, char* argv[])
 	return ((RET_CODE::NO_ERROR == ret_status) ? 0 : 1);
 }
 
-void app_od_preproc(Parameter& inp_par, std::mutex& mtx)
+void app_od_preproc(Parameter& inp_par)
 {
     const INT32U inp_buf = inp_par.getImgSeqCapture().getIdxCurrBuf();
- 
-    mtx.lock();
-    mtx.unlock();
 }
 
-void app_od_mainproc(Parameter& inp_par, std::mutex&&mtx)
+void app_od_mainproc(Parameter& inp_par)
 {
     ;//const INT32U capture;
 }
-void app_capture(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv)
+void app_capture(Parameter& inp_par)
 {
     ImgSeq& img_seq_capture = inp_par.getImgSeqCapture();
 
-    //const INT32U next_buf = img_seq_capture.getIdxNextBuf();
-
-    //capture with idx next buf!! 
-
-    mtx.lock();
-    img_seq_capture.switchIdxBuf();
-    mtx.unlock();
 }
 
-void app_display(Parameter& inp_par, std::mutex& mtx, std::condition_variable& cv)
+void app_display(Parameter& inp_par)
 {
     ImgSeq& img_seq_display = inp_par.getImgSeqDisplay();
 
-    mtx.lock();
-    img_seq_display.switchIdxBuf();
-    mtx.unlock();
 }
 /** --------------------------------------------------------------------------------------------
     END OF FILE
